@@ -150,7 +150,7 @@ The experiment results with WebGazer Data are following.
 
 ## Scripts
 
-For the data processing and mind-wandering prediction, we have [3 main scripts](https://github.com/Yue-ZHAO/MWDET_Project/tree/master/Scripts) which are written as Jupyter notebooks.
+For the data processing and mind-wandering prediction, we have [3 scripts](https://github.com/Yue-ZHAO/MWDET_Project/tree/master/Scripts) in following. Two scripts in Python are written as Jupyter notebooks. The scripts in R contains several functions for data preprocessing, in which the saccade detection is based on a R package named [Saccades](https://github.com/tmalsburg/saccades)
 
 1. Scripts 01 (in Python) for feature extraction and mind-wandering prediction based on Tobii data.
 2. Scripts 02 (in R) for saccade detection based on WebGazer data (detection algorithm is based on [2])
