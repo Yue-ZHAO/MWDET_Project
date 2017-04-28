@@ -1,8 +1,8 @@
 ## Introduction
 
-In this project, we focus on mind-wandering detection during watching lecture videos. Since lecture videos are one of the main conponent in MOOCs and mind-wandering may have negative effects on learning performance in video watching. Previous work shows some relations between learners' mind-wandering and their gaze movements. However, all of these studies are based on professional but expensive eye tracking device. It is not applicable for average MOOC learners. Therefore, we investigate to what extent we can detect learners' mind-wandering based on webcam-based eye tracking in our project.
+In this project, we mainly focus on the detection of learners' mind-wandering during watching lecture videos. Since mind-wandering may have negative effects on learners' learning performance in video watching. Previous studies show that there are some relationships between mind-wandering and gaze movements. However, most of these studies are based on specific eye tracking devices, which are expensive. It is not applicable for average learners using them in MOOCs. Therefore, in our project we investigate whether we can detect learners' mind-wandering based on webcam-based eye tracking.
 
-In this page, we first introduce a Web application which is used to collect participants' gaze data and reports of mind-wandering during watching lecture videos. Then we release the data about mind-wandering reports and the raw gaze data collected by both [Tobii](https://www.tobii.com/) and [WebGazer.js](http://webgazer.cs.brown.edu/)[1]. After a brief introduction of the dataset, the experiment results and classifier parameters, which are not included in our papers due to the space limitation, are introduced concretely. In the last part, we introduce the scripts leveraged in our work for data processing and mind-wandering detection.
+In this page, we first introduce a Web application which is used to collect participants' gaze data and reports of mind-wandering during watching lecture videos. Then we release the data about mind-wandering reports and the raw gaze data collected by both [Tobii](https://www.tobii.com/) and [WebGazer.js](http://webgazer.cs.brown.edu/)[1]. After a brief introduction of the dataset, the experiment results and classifier parameters are introduced, which are included in our papers partially due to the space limitation,. In the last part, we introduce the scripts used in our project for data processing and mind-wandering detection.
 
 ## Web Application for Experiments
 
@@ -15,7 +15,7 @@ If you are interested in this Web application, the detail information and setup 
 
 ## Dataset
 
-You can download the dataset [here](https://www.dropbox.com/s/1gl7mov3q0pbqrk/Data_Publish.zip?dl=0)
+You can download the dataset from either [Github](https://github.com/Yue-ZHAO/MWDET_Project/blob/master/Data_Publish.zip) or [Dropbox](https://www.dropbox.com/s/1gl7mov3q0pbqrk/Data_Publish.zip?dl=0)
 
 There are three folders for the following 3 kinds of data in the dataset. In each folder, a file contains the data of a participant.
 1. Tobii Data (.csv files)
@@ -32,13 +32,13 @@ There are three folders for the following 3 kinds of data in the dataset. In eac
   - The bell rings
   - Video playing status
 
-The timestamps leveraged in this experiments are based on [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) (e.g. 2017-04-26T14:38:29.235Z) with UTC+0 timezone.
+The timestamps used in this experiments are based on [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) (e.g. 2017-04-26T14:38:29.235Z) with UTC+0 timezone.
 
 The video information (i.e. video playing time and video length) can be found from the event data. The lengths of the videos about [solar energy](https://www.youtube.com/watch?v=SNmKom56HqE) and [nuclear energy](https://www.youtube.com/watch?v=BW4Q9YQ2gAQ) are about 468 seconds and about 400 seconds respectively.
 
 ## Detection Results for Mind-Wandering
 
-In the following table, we first list classifiers with parameters leveraged in our experiments. All of them are based on modules in scikit-learn.
+In the following table, we first list classifiers with parameters in our experiments. All of them are based on modules in scikit-learn.
 
 | Classifier | Parameters | module |
 | ---------- | ---------- | ------ |
