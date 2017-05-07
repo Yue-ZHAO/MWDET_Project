@@ -38,11 +38,11 @@ The video information (i.e. video playing time and video length) can be found fr
 
 ## Detection Results for Mind-Wandering
 
-In the following table, we first list classifiers with parameters in our experiments. All of them are based on modules in scikit-learn.
+In the following table, we first list classifiers with grid search parameters in our experiments. All of them are based on modules in scikit-learn.
 
 | Classifier | Grid Search Parameters | module |
 | ---------- | ---------- | ------ |
-| Logistic Regression | penalty=['l1', 'l2'], classify__tol=[0.1, 0.01, 0.001, 0.0001], C=[100, 10, 1, 0.1], class_weight=[None, 'balanced'] | [sklearn.linear_model.LogisticRegression](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) |
+| Logistic Regression | penalty=['l1', 'l2'], tol=[0.1, 0.01, 0.001, 0.0001], C=[100, 10, 1, 0.1], class_weight=[None, 'balanced'] | [sklearn.linear_model.LogisticRegression](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) |
 | GaussianNB | Default Prior Probabilities | [sklearn.naive_bayes.GaussianNB](http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html) |
 | SVM | loss=['hinge', 'squared_hinge'], tol=[0.1, 0.01, 0.001, 0.0001], C=[100, 10, 1, 0.1], class_weight=[None, 'balanced'] | [sklearn.svm.SVC](http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC) |
 
