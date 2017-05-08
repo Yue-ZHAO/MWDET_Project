@@ -78,7 +78,7 @@ fixation_webgazerdata_preprocess <- function(input_filename){
 	return(df_webgazerdata)
 }
 
-fixation_webgazerdata_execute <- function(df_webgazerdata, lambda){
+fixation_gazedata_execute <- function(df_webgazerdata, lambda){
 
 	library("zoom")
 	library("saccades")
@@ -86,7 +86,7 @@ fixation_webgazerdata_execute <- function(df_webgazerdata, lambda){
 	# Engbert, Ralf, and Reinhold Kliegl. 
 	# "Microsaccades uncover the orientation of covert attention." 
 	# Vision research 43.9 (2003): 1035-1045.
-	df_webgazerdata <- saccades_detection(df_webgazerdata,  lambda = 1, smooth.saccades=T)
+	df_webgazerdata <- saccades_detection(df_webgazerdata,  lambda=lambda, smooth.saccades=T)
 
 	return(df_webgazerdata)
 }
@@ -95,7 +95,7 @@ fixation_webgazerdata_execute <- function(df_webgazerdata, lambda){
 # Since the detection requency is about 5Hz, which means that the timespan between two timestamp is about 200ms. 
 # However, based on previous work(??), the fixation is about 100 ms to 800 ms, which means that we can not detect fixation accurately
 # 
-fixation_webgazerdata_postprocess <- function(df_webgazerdata){    
+fixation_gazedata_postprocess <- function(df_webgazerdata){    
     # Curently, we measure whether the movement bewteen previous eye gaze point and current eye gaze point is a saccade.
     # Then we calculate FixationIndex, FixationPointX (MCSpx), FixationPointY (MCSpx), GazeEventDuration, AbsoluteSaccadicDirection
 
@@ -213,11 +213,51 @@ fixation_webgazerdata_trans <- function(input_folderpath, output_folderpath){
 
 		# Generate fixations and saccades
 		df_webgazerdata <- fixation_webgazerdata_preprocess(filepath_preprocessed)
-		df_webgazerdata <- fixation_webgazerdata_execute(df_webgazerdata, lambda=1)
-		df_webgazerdata <- fixation_webgazerdata_postprocess(df_webgazerdata)
+		df_webgazerdata <- fixation_gazedata_execute(df_webgazerdata, lambda=1)
+		df_webgazerdata <- fixation_gazedata_postprocess(df_webgazerdata)
 		
 		# Write dataframe into a file in output folder
 		filepath_output <- paste(output_folderpath, filename, sep="/")
 		write.csv(x = df_webgazerdata, file = filepath_output, sep = ",", dec=".")
+	}
+}
+
+fixation_tobiidata_preprocess <- function(input_filename){
+	
+	df_tobiidata <- read.csv2(input_filename, sep=",")
+
+    # Data Preprocessing
+	df_tobiidata <- df_tobiidata[!duplicated(df_tobiidata), ]
+	df_tobiidata <- df_tobiidata[, c("Timestamp_utc", "GazePointX..ADCSpx.", "GazePointY..ADCSpx.")]
+	
+	df_tobiidata$Timestamp_utc <- strptime(df_tobiidata$Timestamp_utc, "%Y-%m-%dT%H:%M:%OSZ")
+	op <- options(digits.secs=3)
+	df_tobiidata$time <- as.numeric(difftime(df_tobiidata$Timestamp_utc, min(df_tobiidata$Timestamp_utc))) * 1000
+
+	df_tobiidata$trial <- 1
+
+	df_tobiidata$x <- as.numeric(as.character(df_tobiidata$GazePointX..ADCSpx.))
+	df_tobiidata$y <- as.numeric(as.character(df_tobiidata$GazePointY..ADCSpx.))
+
+	df_tobiidata <- na.omit(df_tobiidata)
+
+	return(df_tobiidata)
+}
+
+fixation_tobiidata_trans <- function(input_folderpath, output_folderpath){
+	list_filename <- list.files(input_folderpath, pattern="*.csv")
+	for (filename in list_filename) {
+
+		# Get filename
+		filepath_preprocessed <- paste(input_folderpath, filename, sep="/")
+
+		# Generate fixations and saccades
+		df_tobiidata <- fixation_tobiidata_preprocess(filepath_preprocessed)
+		df_tobiidata <- fixation_gazedata_execute(df_tobiidata, lambda=6)
+		df_tobiidata <- fixation_gazedata_postprocess(df_tobiidata)
+		
+		# Write dataframe into a file in output folder
+		filepath_output <- paste(output_folderpath, filename, sep="/")
+		write.csv(x = df_tobiidata, file = filepath_output, sep = ",", dec=".")
 	}
 }
