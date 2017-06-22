@@ -27,12 +27,15 @@ saccades_detection <- function(samples, lambda, smooth.saccades) {
   vx[length(vx)] <- vx[length(vx)-1]
   vy[length(vy)] <- vy[length(vy)-1]
 
+  # computation of velocity thresholds for the detection algorithm was based on the median of the velocity time series to protect the analysis from noise
   msdx <- sqrt(median(vx**2, na.rm=T) - median(vx, na.rm=T)**2)
   msdy <- sqrt(median(vy**2, na.rm=T) - median(vy, na.rm=T)**2)
 
+  # Detection thresholds were computed independently for horizontal gx and vertical gy components
   radiusx <- msdx * lambda
   radiusy <- msdy * lambda
 
+  # 
   sacc <- ((vx/radiusx)**2 + (vy/radiusy)**2) > 1
   if (smooth.saccades) {
     sacc <- stats::filter(sacc, rep(1/3, 3))

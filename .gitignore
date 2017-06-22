@@ -2,3 +2,5 @@ Data_Publish/
 
 Scripts/.ipynb_checkpoints/
 Scripts/*.csv
+
+npm-debug.log
