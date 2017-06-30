@@ -1,19 +1,27 @@
 ## Introduction
 
-In this project, we mainly focus on the detection of learners' mind-wandering during watching lecture videos. Since mind-wandering may have negative effects on learners' learning performance in video watching. Previous studies show that there are some relationships between mind-wandering and gaze movements. However, most of these studies are based on specific eye tracking devices, which are expensive. It is not applicable for average learners using them in MOOCs. Therefore, in our project we investigate whether we can detect learners' mind-wandering based on webcam-based eye tracking.
+In this project, we mainly focus on the detection of learners' mind-wandering during watching lecture videos. Since mind-wandering may have negative effects on learners' learning performance in video watching. Previous studies show that there are some relationships between mind-wandering and gaze movements. However, most of these studies are based on specific eye tracking devices, which are expensive. It is not applicable for average learners using them in MOOCs. Therefore, in our project, we investigate whether we can detect learners' mind-wandering based on webcam-based eye tracking.
 
-In this page, we first introduce a Web application which is used to collect participants' gaze data and reports of mind-wandering during watching lecture videos. Then we release the data about mind-wandering reports and the raw gaze data collected by both [Tobii](https://www.tobii.com/) and [WebGazer.js](http://webgazer.cs.brown.edu/)[1]. After a brief introduction of the dataset, the experiment results and classifier parameters are introduced, which are included in our papers partially due to the space limitation,. In the last part, we introduce the scripts used in our project for data processing and mind-wandering detection.
+In this page, we first introduce a Web application which is used to collect participants' gaze data and reports of mind-wandering during watching lecture videos. Then we release the data about mind-wandering reports and the raw gaze data collected by both [Tobii](https://www.tobii.com/) and [WebGazer.js](http://webgazer.cs.brown.edu/)[1]. After a brief introduction of the dataset, the experiment results and classifier parameters are introduced, which are included in our papers partially due to the space limitation. In the last part, we introduce the scripts used in our project for data processing and mind-wandering detection.
 
-## Web Application for Experiments
+For detail content about our project, please check [our paper](https://github.com/Yue-ZHAO/MWDET_Project/blob/master/ECTEL_2017_mindwandering.pdf)
 
-During the experiments, participants are asked to watch two lecture videos (i.e. [solar energy](https://www.youtube.com/watch?v=SNmKom56HqE) and [nuclear energy](https://www.youtube.com/watch?v=BW4Q9YQ2gAQ)). Before each video, there is a webcam setup and a calibration for WebGazer.js. In the webcam setup, participants are asked to make sure their faces are fully detected before the calibataion. In the calibration, participants are asked to click 40 dots randomly appearing in the screen.
-The calibration of Tobii is conducted before the participants start interacting with the Web application.
+## Experiment Settings
 
-In our experiments, Tobii studio runs in the background while participants are interacting with this Web application. When participants are watching lecture videos, their gaze data is recorded by both Tobii and the Web application at the same time. Their reports of mind-wandering are recorded by the Web application.
+### Participants
+We recruited our study participants (six females, seven males, all with a computer science background) through an internal mailing list and did not pay them. Six of them wore glasses or contact lenses.
+
+### Hardware and Software
+We used two eye-tracking devices in the study, a high-quality one as a reference and a low-quality webcam. Concretely, we made use of the professional \toxtwo{} eye tracker and its corresponding software Tobii Studio to estimate participants' gaze points. Our webcam is the built-in camera of our experimental laptop, a Dell Inspiron 5759 with a 17-inch screen and a $1920 \times 1080$ resolution. To estimate the gaze points based on a live webcam feed, we relied on \texttt{WebGazer.js}~\cite{papoutsaki2016webgazer}, an open source eye-tracking library written in JavaScript.
+
+### Web Application
+
+During the experiments, participants are asked to watch two lecture videos (i.e. [solar energy](https://www.youtube.com/watch?v=SNmKom56HqE) and [nuclear energy](https://www.youtube.com/watch?v=BW4Q9YQ2gAQ)). Before each video, there is a webcam setup and a calibration for WebGazer.js. In the webcam setup, participants are asked to make their faces fully detected before the calibration. In the calibration, participants are asked to click 40 dots randomly appearing on the screen. The calibration of Tobii is conducted before the participants start interacting with the Web application.
+When participants are watching lecture videos, their gaze data is recorded by both Tobii and the Web application at the same time. Their reports of mind-wandering are recorded by the Web application.
 
 If you are interested in this Web application, the detail information and setup can be found in [this repository](https://github.com/Yue-ZHAO/MWDET_WebApp).
 
-## Dataset
+### Experiment Dataset
 
 You can download the dataset from either [Github](https://github.com/Yue-ZHAO/MWDET_Project/blob/master/Data_Publish.zip) or [Dropbox](https://www.dropbox.com/s/1gl7mov3q0pbqrk/Data_Publish.zip?dl=0)
 
@@ -46,13 +54,13 @@ In the following table, we first list classifiers with grid search parameters in
 | GaussianNB | Default Prior Probabilities | [sklearn.naive_bayes.GaussianNB](http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html) |
 | Linear SVM | loss=['hinge', 'squared_hinge'], tol=[0.1, 0.01, 0.001, 0.0001], C=[100, 10, 1, 0.1], class_weight=[None, 'balanced'] | [sklearn.svm.SVC](http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC) |
 
-Then we list all the results generated by each classifier in the following.
+Then we list all the results generated by each classifier as follows:
 
 | Method | Precision | Recall | F1-measure |
 | ------ | ---------:| ------:| ----------:|
 | Baseline | 0.290 | 0.291 | 0.290 |
 
-The experiment results with Tobii Data are following.
+The experiment results with Tobii Data are as follows:
 
 | Data | Classifier | Feature | SMOTE | Precision | Recall | F1-measure |
 | ---- | ---------- | ------- | ----- | ---------:| ------:| ----------:|
@@ -81,7 +89,7 @@ The experiment results with Tobii Data are following.
 | Tobii Data | GaussianNB | Global+Local | No | 0.342 | 0.486 | 0.335 |
 | Tobii Data | GaussianNB | Global+Local | Yes | 0.286 | 0.526 | 0.325 |
 
-The experiment results with WebGazer Data are following.
+The experiment results with WebGazer Data are as follows:
 
 | Data | Classifier | Feature | SMOTE | Precision | Recall | F1-measure |
 | ---- | ---------- | ------- | ----- | ---------:| ------:| ----------:|
@@ -112,13 +120,13 @@ The experiment results with WebGazer Data are following.
 
 ## Scripts
 
-For the data processing and mind-wandering prediction, we have [3 scripts](https://github.com/Yue-ZHAO/MWDET_Project/tree/master/Scripts) in following. Two scripts in Python are written as Jupyter notebooks. The scripts in R contains several functions for data preprocessing, in which the saccade detection is based on a R package named [Saccades](https://github.com/tmalsburg/saccades)
+For the data processing and mind-wandering prediction, we have [3 scripts](https://github.com/Yue-ZHAO/MWDET_Project/tree/master/Scripts) in following. Two scripts in Python are written as Jupyter notebooks. The scripts in R contains several functions for data preprocessing, in which the saccade detection is based on an R package named [Saccades](https://github.com/tmalsburg/saccades)
 
 1. Scripts 01 (in Python) for feature extraction and mind-wandering prediction based on Tobii data.
 2. Scripts 02 (in R) for saccade detection based on WebGazer data (detection algorithm is based on [2])
 3. Scripts 03 (in Python) for feature extraction and mind-wandering prediction based on WebGazer data preprocessed in 2.
 
-Due to the randomazation of the techniques SMOTE [3], which is leveraged in our scripts for unbalanced data, the prediction results might be slightly different in each runs.
+Due to the randomization of the techniques SMOTE [3], which is used in our scripts for unbalanced data, the prediction results might be slightly different in each runs.
 
 ## Reference
 [1] Papoutsaki, Alexandra, et al. "WebGazer: scalable webcam eye tracking using user interactions." IJCAI, 2016.
